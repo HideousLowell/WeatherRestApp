@@ -16,14 +16,9 @@ import java.util.Date;
 public class Measurement {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name = "value")
     private double value;
-
-    @Column(name = "raining")
     private boolean raining;
 
     @Column(name = "date_time")

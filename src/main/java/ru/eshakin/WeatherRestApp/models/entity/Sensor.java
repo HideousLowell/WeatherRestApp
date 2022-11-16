@@ -3,9 +3,13 @@ package ru.eshakin.WeatherRestApp.models.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 import ru.eshakin.WeatherRestApp.models.dto.SensorDTO;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +21,10 @@ import java.util.List;
 public class Sensor {
 
     @Id
-    @Column(name = "name")
     private String name;
 
     @OneToMany(mappedBy = "sensor", fetch = FetchType.LAZY)
     List<Measurement> measurements = new ArrayList<>();
-
-    public Sensor(SensorDTO sensorDTO) {
-        this.name = sensorDTO.getName();
-    }
 
     public Sensor(String name) {
         this.name = name;
