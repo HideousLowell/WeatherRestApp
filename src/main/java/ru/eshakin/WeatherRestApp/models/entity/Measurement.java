@@ -17,13 +17,13 @@ public class Measurement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private double value;
-    private boolean raining;
+    private Integer id;
+    private Double value;
+    private Boolean raining;
 
     @Column(name = "date_time")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateTime;
+    private Date dateTime = new Date();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull

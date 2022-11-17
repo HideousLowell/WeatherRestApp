@@ -6,5 +6,5 @@ import ru.eshakin.WeatherRestApp.models.entity.Measurement;
 
 @Repository
 public interface MeasurementRepository extends JpaRepository<Measurement, Integer> {
-
+    int countByRainingIsTrue();
 }

@@ -7,11 +7,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.eshakin.WeatherRestApp.models.dto.MeasurementDTO;
-import ru.eshakin.WeatherRestApp.models.entity.Measurement;
+import ru.eshakin.WeatherRestApp.models.dto.MeasurementResponse;
 import ru.eshakin.WeatherRestApp.services.MeasurementService;
 import ru.eshakin.WeatherRestApp.services.SensorService;
+import ru.eshakin.WeatherRestApp.util.ErrorResponse;
 import ru.eshakin.WeatherRestApp.util.ErrorsUtil;
+import ru.eshakin.WeatherRestApp.util.exceptions.MeasurementException;
+import ru.eshakin.WeatherRestApp.util.exceptions.SensorNotFoundException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,30 +28,41 @@ public class MeasurementController {
     private final SensorService sensorService;
 
     @GetMapping()
-    public List<MeasurementDTO> getAll() {
-        return measurementService
+    public MeasurementResponse getAll() {
+        return new MeasurementResponse(measurementService
                 .findAll()
                 .stream()
                 .map(measurementService::convertToDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
-    @GetMapping("/{id}")
-    public MeasurementDTO getOne(@PathVariable("id") int id) {
-        Measurement measurement = measurementService.findOne(id);
-        return measurementService.convertToDTO(measurement);
+    @GetMapping("/rainydayscount")
+    public int getRainyDaysCount() {
+        return measurementService.getRainyDaysCount();
     }
 
     @PostMapping("/add")
-    public ResponseEntity<HttpStatus> create(@RequestBody @Validated MeasurementDTO measurementDTO,
+    public ResponseEntity<HttpStatus> create(@RequestBody @Validated MeasurementDTO dto,
                                              BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             ErrorsUtil.returnErrorsToClient(bindingResult);
 
-        sensorService.find(measurementDTO.getSensor().getName()); // throws if sensor not found
-        var measurement = measurementService.convertToEntity(measurementDTO);
+        sensorService.find(dto.getSensor().getName()); // throws if sensor not found
+        var measurement = measurementService.convertToEntity(dto);
         measurementService.save(measurement);
 
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<ErrorResponse> handleException(MeasurementException ex) {
+        ErrorResponse response = new ErrorResponse(ex.getMessage(), new Date());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<ErrorResponse> handleException(SensorNotFoundException exception) {
+        ErrorResponse response = new ErrorResponse("Sensor with this name not found", new Date());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
