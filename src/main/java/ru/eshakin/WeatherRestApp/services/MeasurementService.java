@@ -19,7 +19,7 @@ public class MeasurementService {
     private final ModelMapper modelMapper;
 
     public List<Measurement> findAll() {
-        return measurementRepository.findAll();
+        return (List<Measurement>) measurementRepository.findAll();
     }
 
     @Transactional

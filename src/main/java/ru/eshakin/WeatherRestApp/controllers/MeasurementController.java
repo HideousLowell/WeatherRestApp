@@ -16,7 +16,6 @@ import ru.eshakin.WeatherRestApp.util.exceptions.MeasurementException;
 import ru.eshakin.WeatherRestApp.util.exceptions.SensorNotFoundException;
 
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController

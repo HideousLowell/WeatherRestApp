@@ -21,7 +21,7 @@ public class SensorService {
     private final ModelMapper modelMapper;
 
     public List<Sensor> findAll() {
-        return sensorRepository.findAll();
+        return (List<Sensor>) sensorRepository.findAll();
     }
 
     public Sensor find(String name) throws SensorNotFoundException {
