@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SensorDTO {
+public class SensorDto {
 
     @NotBlank(message = "Name is mandatory")
     @Size(min = 3, max = 30, message = "Name should be between 3 and 30 characters")

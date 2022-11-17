@@ -4,37 +4,36 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.eshakin.WeatherRestApp.models.dto.SensorDTO;
-import ru.eshakin.WeatherRestApp.services.SensorService;
-import ru.eshakin.WeatherRestApp.util.ErrorResponse;
-import ru.eshakin.WeatherRestApp.util.ErrorsUtil;
-import ru.eshakin.WeatherRestApp.util.exceptions.SensorNotCreatedException;
+import ru.eshakin.WeatherRestApp.facade.SensorFacade;
+import ru.eshakin.WeatherRestApp.models.dto.SensorDto;
 
-import java.util.Date;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/sensors")
 public class SensorController {
 
-    private final SensorService sensorService;
+    private final SensorFacade sensorFacade;
 
     @PostMapping("registration")
-    public ResponseEntity<HttpStatus> create(@RequestBody @Validated SensorDTO dto,
-                                             BindingResult bindingResult) {
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid SensorDto dto,
+                                                 BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             ErrorsUtil.returnErrorsToClient(bindingResult);
 
-        sensorService.save(sensorService.convertToEntity(dto));
+        sensorFacade.create(dto);
+
+        return ResponseEntity.ok(HttpStatus.CREATED);
+
+    }
+
+    @DeleteMapping
+    public ResponseEntity<HttpStatus> delete(@RequestBody SensorDto dto) {
+        sensorFacade.delete(dto);
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @ExceptionHandler
-    private ResponseEntity<ErrorResponse> handleException(SensorNotCreatedException exception) {
-        ErrorResponse response = new ErrorResponse(exception.getMessage(), new Date());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
 }

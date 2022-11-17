@@ -1,6 +1,5 @@
 package ru.eshakin.WeatherRestApp.models.dto;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,15 +7,16 @@ import lombok.Setter;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MeasurementDTO {
+public class MeasurementDto {
 
-    @Min(value = -100, message = "The temperature should be above -100 degrees")
-    @Max(value = 100, message = "The temperature should be 100 degrees")
+    @Min(value = -100, message = "The temperature should be over -100 degrees")
+    @Max(value = 100, message = "The temperature should be below 100 degrees")
     @NotNull
     private Double value;
 
@@ -24,5 +24,5 @@ public class MeasurementDTO {
     private Boolean raining;
 
     @NotNull
-    private SensorDTO sensor;
+    private SensorDto sensor;
 }

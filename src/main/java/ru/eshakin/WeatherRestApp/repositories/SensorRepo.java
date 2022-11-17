@@ -7,7 +7,7 @@ import ru.eshakin.WeatherRestApp.models.entity.Sensor;
 import java.util.Optional;
 
 @Repository
-public interface SensorRepository extends CrudRepository<Sensor, String> {
+public interface SensorRepo extends CrudRepository<Sensor, String> {
     void deleteByName(String name);
     Optional<Sensor> findByName(String name);
 }

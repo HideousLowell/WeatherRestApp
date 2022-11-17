@@ -13,7 +13,7 @@ public class WeatherRestAppApplication {
     }
 
     @Bean
-    public ModelMapper modelMapper() {
+    public ModelMapper mapper() {
         return new ModelMapper();
     }
 }
