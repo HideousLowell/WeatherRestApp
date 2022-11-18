@@ -3,7 +3,6 @@ package ru.eshakin.WeatherRestApp.facade;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import ru.eshakin.WeatherRestApp.models.dto.SensorDto;
 import ru.eshakin.WeatherRestApp.models.entity.Sensor;
 import ru.eshakin.WeatherRestApp.services.SensorService;

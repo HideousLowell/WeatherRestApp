@@ -9,11 +9,7 @@ import ru.eshakin.WeatherRestApp.facade.MeasurementFacade;
 import ru.eshakin.WeatherRestApp.facade.SensorFacade;
 import ru.eshakin.WeatherRestApp.models.dto.MeasurementDto;
 import ru.eshakin.WeatherRestApp.models.dto.MeasurementResponse;
-import ru.eshakin.WeatherRestApp.services.MeasurementService;
-import ru.eshakin.WeatherRestApp.services.SensorService;
 import ru.eshakin.WeatherRestApp.util.ApiError;
-
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor

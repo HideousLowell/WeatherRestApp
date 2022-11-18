@@ -16,14 +16,17 @@ public class SensorServiceImpl implements SensorService{
 
     private final SensorRepo sensorRepo;
 
+    @Override
     public List<Sensor> findAll() {
         return (List<Sensor>) sensorRepo.findAll();
     }
 
+    @Override
     public Optional<Sensor> find(String name) {
         return sensorRepo.findByName(name);
     }
 
+    @Override
     @Transactional
     public Optional<Sensor> create(Sensor sensor)  {
         if (sensorRepo.findByName(sensor.getName()).isPresent())
@@ -32,6 +35,7 @@ public class SensorServiceImpl implements SensorService{
         return Optional.of(sensorRepo.save(sensor));
     }
 
+    @Override
     @Transactional
     public boolean delete(String name) {
         Optional<Sensor> sensor = sensorRepo.findByName(name);

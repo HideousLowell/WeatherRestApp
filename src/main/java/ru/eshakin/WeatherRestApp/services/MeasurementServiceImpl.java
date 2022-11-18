@@ -1,38 +1,42 @@
 package ru.eshakin.WeatherRestApp.services;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.eshakin.WeatherRestApp.models.dto.MeasurementDto;
 import ru.eshakin.WeatherRestApp.models.entity.Measurement;
 import ru.eshakin.WeatherRestApp.repositories.MeasurementRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class MeasurementServiceImpl implements MeasurementService{
+public class MeasurementServiceImpl implements MeasurementService {
 
-    private final MeasurementRepo measurementRepository;
-    private final ModelMapper mapper;
+    private final MeasurementRepo measurementRepo;
 
+    @Override
     public List<Measurement> findAll() {
-        return (List<Measurement>) measurementRepository.findAll();
+        return (List<Measurement>) measurementRepo.findAll();
     }
 
+    @Override
     @Transactional
     public void create(Measurement measurement) {
-        measurementRepository.save(measurement);
+        measurementRepo.save(measurement);
     }
 
+    @Override
     @Transactional
-    public void delete(int id) {
-        measurementRepository.deleteById(id);
+    public boolean delete(int id) {
+        Optional<Measurement> measurement = measurementRepo.findById(id);
+        measurement.ifPresent(measurementRepo::delete);
+        return measurement.isPresent();
     }
 
+    @Override
     public int getRainyDaysCount() {
-        return measurementRepository.countByRainingIsTrue();
+        return measurementRepo.countByRainingIsTrue();
     }
 }

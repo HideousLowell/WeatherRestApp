@@ -22,6 +22,7 @@ public class RestExceptionsHandler extends ResponseEntityExceptionHandler {
 
 
     @Override
+    @NonNull
     protected ResponseEntity<Object> handleExceptionInternal(@NonNull Exception ex,
                                                              Object body,
                                                              @NonNull HttpHeaders headers,
@@ -36,7 +37,9 @@ public class RestExceptionsHandler extends ResponseEntityExceptionHandler {
                     .getBindingResult()
                     .getFieldErrors()
                     .stream()
-                    .map(fieldError -> new ApiValidationError(fieldError.getObjectName(), fieldError.getField(),
+                    .map(fieldError -> new ApiValidationError(
+                            fieldError.getObjectName(),
+                            fieldError.getField(),
                             fieldError.getRejectedValue(),
                             fieldError.getDefaultMessage()))
                     .collect(Collectors.toList());
@@ -49,7 +52,7 @@ public class RestExceptionsHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler
-    private ResponseEntity<ApiError> handleException(RuntimeException exception) {
+    private ResponseEntity<ApiError> handleException(BadRequestException exception) {
         ApiError response = new ApiError(exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
