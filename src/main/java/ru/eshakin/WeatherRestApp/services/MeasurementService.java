@@ -9,4 +9,5 @@ public interface MeasurementService {
     void create(Measurement measurement);
     boolean delete(int id);
     int getRainyDaysCount();
+    void batchCreate(List<Measurement> measurements);
 }

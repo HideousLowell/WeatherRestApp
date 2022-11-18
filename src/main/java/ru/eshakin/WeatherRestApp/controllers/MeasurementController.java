@@ -6,10 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.eshakin.WeatherRestApp.facade.MeasurementFacade;
-import ru.eshakin.WeatherRestApp.facade.SensorFacade;
 import ru.eshakin.WeatherRestApp.models.dto.MeasurementDto;
-import ru.eshakin.WeatherRestApp.models.dto.MeasurementResponse;
-import ru.eshakin.WeatherRestApp.util.ApiError;
+import ru.eshakin.WeatherRestApp.models.dto.MeasurementList;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,11 +15,10 @@ import ru.eshakin.WeatherRestApp.util.ApiError;
 public class MeasurementController {
 
     private final MeasurementFacade mFacade;
-    private final SensorFacade sFacade;
 
     @GetMapping()
-    public MeasurementResponse getAll() {
-        return new MeasurementResponse(mFacade.findAll());
+    public MeasurementList getAll() {
+        return new MeasurementList(mFacade.findAll());
     }
 
     @GetMapping("/rainydayscount")
@@ -29,16 +26,17 @@ public class MeasurementController {
         return mFacade.getRainyDaysCount();
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<?> create(@RequestBody @Validated MeasurementDto dto) {
-
-        if (sFacade.find(dto.getSensor().getName()).isEmpty())
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiError("Sensor with this name not found"));
-
-        mFacade.create(dto);
-
+    @PostMapping("/add/batch")
+    public ResponseEntity<HttpStatus> createBatch(@RequestBody @Validated MeasurementList listOfDto) {
+        mFacade.batchCreate(listOfDto);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> batchCreate(@RequestBody @Validated MeasurementDto dto) {
+        mFacade.create(dto);
+        return ResponseEntity.ok(HttpStatus.CREATED);
+    }
+
+
 }

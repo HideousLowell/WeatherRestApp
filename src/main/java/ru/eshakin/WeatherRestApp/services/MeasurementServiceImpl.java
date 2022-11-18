@@ -39,4 +39,11 @@ public class MeasurementServiceImpl implements MeasurementService {
     public int getRainyDaysCount() {
         return measurementRepo.countByRainingIsTrue();
     }
+
+    @Override
+    @Transactional
+    public void batchCreate(List<Measurement> measurements) {
+        measurementRepo.saveAll(measurements);
+    }
+
 }

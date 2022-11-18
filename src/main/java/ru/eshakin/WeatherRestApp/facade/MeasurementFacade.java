@@ -1,7 +1,7 @@
 package ru.eshakin.WeatherRestApp.facade;
 
 import ru.eshakin.WeatherRestApp.models.dto.MeasurementDto;
-import ru.eshakin.WeatherRestApp.models.entity.Measurement;
+import ru.eshakin.WeatherRestApp.models.dto.MeasurementList;
 
 import java.util.List;
 
@@ -10,6 +10,5 @@ public interface MeasurementFacade {
      void create(MeasurementDto measurement);
      int getRainyDaysCount();
      void delete(int id);
-     MeasurementDto convertToDto(Measurement measurement);
-     Measurement convertToEntity(MeasurementDto measurementDTO);
+     void batchCreate(MeasurementList listOfDto);
 }
