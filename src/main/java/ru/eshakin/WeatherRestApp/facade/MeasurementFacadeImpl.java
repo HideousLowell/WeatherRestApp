@@ -29,6 +29,14 @@ public class MeasurementFacadeImpl implements MeasurementFacade {
                 .collect(Collectors.toList());
     }
 
+    public List<MeasurementDto> findBySensor(String sensorName) {
+        return measurementService
+                .findBySensorName(sensorName)
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
     @Override
     public int getRainyDaysCount() {
         return measurementService.getRainyDaysCount();

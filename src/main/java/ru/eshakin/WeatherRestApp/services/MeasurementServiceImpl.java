@@ -1,10 +1,13 @@
 package ru.eshakin.WeatherRestApp.services;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.eshakin.WeatherRestApp.models.entity.Measurement;
+import ru.eshakin.WeatherRestApp.models.entity.Sensor;
 import ru.eshakin.WeatherRestApp.repositories.MeasurementRepo;
+import ru.eshakin.WeatherRestApp.util.exceptions.BadRequestException;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +18,7 @@ import java.util.Optional;
 public class MeasurementServiceImpl implements MeasurementService {
 
     private final MeasurementRepo measurementRepo;
+    private final SensorService sensorService;
 
     @Override
     public List<Measurement> findAll() {
@@ -44,6 +48,16 @@ public class MeasurementServiceImpl implements MeasurementService {
     @Transactional
     public void batchCreate(List<Measurement> measurements) {
         measurementRepo.saveAll(measurements);
+    }
+
+    public List<Measurement> findBySensorName(String sensorName) {
+        Optional<Sensor> sensor = sensorService.find(sensorName);
+
+        if (sensor.isEmpty())
+            throw new BadRequestException("Sensor with this name not found");
+
+        Hibernate.initialize(sensor.get().getMeasurements());
+        return sensor.get().getMeasurements();
     }
 
 }

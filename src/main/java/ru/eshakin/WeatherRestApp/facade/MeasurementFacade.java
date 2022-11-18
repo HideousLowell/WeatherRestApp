@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface MeasurementFacade {
      List<MeasurementDto> findAll();
+
+     List<MeasurementDto> findBySensor(String sensorName);
      void create(MeasurementDto measurement);
      int getRainyDaysCount();
      void delete(int id);

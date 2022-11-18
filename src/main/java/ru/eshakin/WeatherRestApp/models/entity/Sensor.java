@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -19,9 +18,6 @@ public class Sensor {
     private String name;
 
     @OneToMany(mappedBy = "sensor", fetch = FetchType.LAZY)
-    List<Measurement> measurements = new ArrayList<>();
+    private List<Measurement> measurements;
 
-    public Sensor(String name) {
-        this.name = name;
-    }
 }

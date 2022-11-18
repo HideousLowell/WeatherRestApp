@@ -21,6 +21,11 @@ public class MeasurementController {
         return new MeasurementList(mFacade.findAll());
     }
 
+    @GetMapping("{sensorName}")
+    public MeasurementList getForSensor(@PathVariable String sensorName) {
+        return new MeasurementList(mFacade.findBySensor(sensorName));
+    }
+
     @GetMapping("/rainydayscount")
     public int getRainyDaysCount() {
         return mFacade.getRainyDaysCount();
@@ -33,7 +38,7 @@ public class MeasurementController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> batchCreate(@RequestBody @Validated MeasurementDto dto) {
+    public ResponseEntity<HttpStatus> batchCreate(@RequestBody @Validated MeasurementDto dto) {
         mFacade.create(dto);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
