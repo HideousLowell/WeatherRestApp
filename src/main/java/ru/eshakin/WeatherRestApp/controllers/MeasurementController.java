@@ -38,5 +38,4 @@ public class MeasurementController {
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
-
 }
