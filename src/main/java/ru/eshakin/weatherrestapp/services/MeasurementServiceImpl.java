@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MeasurementServiceImpl implements MeasurementService {
 
@@ -26,26 +25,23 @@ public class MeasurementServiceImpl implements MeasurementService {
     }
 
     @Override
-    @Transactional
     public void create(Measurement measurement) {
         measurementRepo.save(measurement);
     }
 
     @Override
-    @Transactional
     public boolean delete(int id) {
         Optional<Measurement> measurement = measurementRepo.findById(id);
         measurement.ifPresent(measurementRepo::delete);
         return measurement.isPresent();
     }
-
+    Integer a;
     @Override
     public int getRainyDaysCount() {
         return measurementRepo.countByRainingIsTrue();
     }
 
     @Override
-    @Transactional
     public void batchCreate(List<Measurement> measurements) {
         measurementRepo.saveAll(measurements);
     }

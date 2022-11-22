@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class SensorServiceImpl implements SensorService{
 
@@ -27,7 +26,6 @@ public class SensorServiceImpl implements SensorService{
     }
 
     @Override
-    @Transactional
     public Optional<Sensor> create(Sensor sensor)  {
         if (sensorRepo.findByName(sensor.getName()).isPresent())
             return Optional.empty();
@@ -36,7 +34,6 @@ public class SensorServiceImpl implements SensorService{
     }
 
     @Override
-    @Transactional
     public boolean delete(String name) {
         Optional<Sensor> sensor = sensorRepo.findByName(name);
         sensor.ifPresent(sensorRepo::delete);
