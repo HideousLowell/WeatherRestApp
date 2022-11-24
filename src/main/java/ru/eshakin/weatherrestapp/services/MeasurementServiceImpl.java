@@ -3,7 +3,6 @@ package ru.eshakin.weatherrestapp.services;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.eshakin.weatherrestapp.models.entity.Measurement;
 import ru.eshakin.weatherrestapp.models.entity.Sensor;
 import ru.eshakin.weatherrestapp.repositories.MeasurementRepo;
@@ -35,7 +34,7 @@ public class MeasurementServiceImpl implements MeasurementService {
         measurement.ifPresent(measurementRepo::delete);
         return measurement.isPresent();
     }
-    Integer a;
+
     @Override
     public int getRainyDaysCount() {
         return measurementRepo.countByRainingIsTrue();
