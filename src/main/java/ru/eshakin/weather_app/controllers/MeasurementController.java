@@ -54,7 +54,7 @@ public class MeasurementController {
      */
     @PostMapping("/add/batch")
     public ResponseEntity<HttpStatus> createBatch(@RequestBody @Validated MeasurementList measurements) {
-        mFacade.addAll(measurements);
+        mFacade.batchCreate(measurements);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 

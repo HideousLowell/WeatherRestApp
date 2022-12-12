@@ -5,7 +5,7 @@ import ru.eshakin.weather_app.errors.ApiError;
 
 /**
  * Содержит ApiError
- * Ошибка при обращении к БД
+ * Ошибка при работе с БД
  * @see ApiError
  */
 @Getter

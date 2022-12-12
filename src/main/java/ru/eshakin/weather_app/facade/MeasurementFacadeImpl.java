@@ -30,8 +30,6 @@ public class MeasurementFacadeImpl implements MeasurementFacade {
     }
 
     public List<MeasurementDto> findBySensor(String sensorName) {
-        if (sensorService.find(sensorName).isEmpty())
-            throw new BadRequestException("Sensor with this name not found");
         return measurementService
                 .findBySensorName(sensorName)
                 .stream()
@@ -46,25 +44,26 @@ public class MeasurementFacadeImpl implements MeasurementFacade {
 
     @Override
     public MeasurementDto create(MeasurementDto dto) {
-        if (sensorService.find(dto.getSensor().getName()).isEmpty())
-            throw new BadRequestException("Sensor with this name not found");
-        measurementService.create(convertToEntity(dto));
+        measurementService
+                .create(convertToEntity(dto))
+                .orElseThrow(() -> new BadRequestException
+                        ("Sensor : " + dto.getSensor().getName() + " not found"));
         return dto;
     }
 
     @Override
-    public MeasurementList addAll(MeasurementList listOfDto) {
+    public MeasurementList batchCreate(MeasurementList listOfDto) {
         List<Measurement> resultList = listOfDto
                 .getMeasurements()
                 .stream()
                 .map(this::convertToEntity)
                 .collect(Collectors.toList());
 
-        resultList.forEach(entity -> {
-            String sensorName = entity.getSensor().getName();
+        for (Measurement measurement : resultList) {
+            String sensorName = measurement.getSensor().getName();
             if (sensorService.find(sensorName).isEmpty())
-                throw new BadRequestException("Sensor with this name not found");
-        });
+                throw new BadRequestException("Sensor : " + sensorName + " not found");
+        }
 
         measurementService.batchCreate(resultList);
         return listOfDto;
@@ -72,9 +71,10 @@ public class MeasurementFacadeImpl implements MeasurementFacade {
 
     @Override
     public int delete(int id) {
-        if (measurementService.delete(id))
-            return id;
-        throw new BadRequestException("Measurement with this id not found");
+        return measurementService
+                .delete(id)
+                .orElseThrow(() -> new BadRequestException("Measurement with this id not found"))
+                .getId();
     }
 
     private MeasurementDto convertToDto(Measurement measurement) {

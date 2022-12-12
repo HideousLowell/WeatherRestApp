@@ -10,24 +10,28 @@ import java.util.Optional;
  */
 public interface SensorService {
     /**
+     * Найти все сенсоры
      * @return список всех сенсоров
      */
     List<Sensor> findAll();
     /**
+     * Найти сенсор
      * @param name - имя искомого сенсора
-     * @return optional сенсор из БД
+     * @return найденный сенсор, или пустой Optional в случае неудачи
      */
     Optional<Sensor> find(String name);
     /**
+     * Добавить сенсор
      * @param sensor - Добавляемый в БД сенсор
      * @return созданный сенсор, или пустой Optional в случае неудачи
      */
     Optional<Sensor> create(Sensor sensor);
     /**
+     * Удалить сенсор
      * @param name - имя удаляемого сенсора
-     * @return результат удаления
+     * @return удаленный сенсор, или пустой Optional в случае неудачи
      */
-    boolean delete(String name);
+    Optional<Sensor> delete(String name);
 
 }
 

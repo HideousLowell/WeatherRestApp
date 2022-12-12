@@ -1,9 +1,6 @@
 package ru.eshakin.weather_app.models.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -13,8 +10,7 @@ import javax.validation.constraints.Size;
  * DTO для класса Sensor
  * @see ru.eshakin.weather_app.models.entity.Sensor
  */
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class SensorDto {

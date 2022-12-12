@@ -3,10 +3,10 @@ package ru.eshakin.weather_app.services;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
+import ru.eshakin.weather_app.exceptions.BadRequestException;
 import ru.eshakin.weather_app.models.entity.Measurement;
 import ru.eshakin.weather_app.models.entity.Sensor;
 import ru.eshakin.weather_app.repositories.MeasurementRepo;
-import ru.eshakin.weather_app.exceptions.BadRequestException;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,15 +24,18 @@ public class MeasurementServiceImpl implements MeasurementService {
     }
 
     @Override
-    public void create(Measurement measurement) {
-        measurementRepo.save(measurement);
+    public Optional<Measurement> create(Measurement measurement) {
+        if (sensorService.find(measurement.getSensor().getName()).isEmpty())
+            return Optional.empty();
+
+        return Optional.of(measurementRepo.save(measurement));
     }
 
     @Override
-    public boolean delete(int id) {
+    public Optional<Measurement> delete(int id) {
         Optional<Measurement> measurement = measurementRepo.findById(id);
         measurement.ifPresent(measurementRepo::delete);
-        return measurement.isPresent();
+        return measurement;
     }
 
     @Override
@@ -41,8 +44,9 @@ public class MeasurementServiceImpl implements MeasurementService {
     }
 
     @Override
-    public void batchCreate(List<Measurement> measurements) {
+    public List<Measurement> batchCreate(List<Measurement> measurements) {
         measurementRepo.saveAll(measurements);
+        return measurements;
     }
 
     @Override
@@ -50,7 +54,7 @@ public class MeasurementServiceImpl implements MeasurementService {
         Optional<Sensor> sensor = sensorService.find(sensorName);
 
         if (sensor.isEmpty())
-            throw new BadRequestException("Sensor with this name not found");
+            throw new BadRequestException("Sensor : " + sensorName + " wasn't found");
 
         Hibernate.initialize(sensor.get().getMeasurements());
         return sensor.get().getMeasurements();

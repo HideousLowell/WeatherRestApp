@@ -23,15 +23,16 @@ public class SensorFacadeImpl implements SensorFacade {
     public SensorDto create(SensorDto dto) {
         sensorService
                 .create(convertToEntity(dto))
-                .orElseThrow(() -> new BadRequestException(dto.getName() + " already exist"));
+                .orElseThrow(() -> new BadRequestException(dto + " already exist"));
         return dto;
     }
 
     @Override
     public SensorDto delete(SensorDto dto) {
-        if (!sensorService.delete(dto.getName()))
-            throw new BadRequestException("Sensor not found");
-        return dto;
+        return sensorService.delete(dto.getName())
+                .stream().map(this::convertToDto)
+                .findFirst()
+                .orElseThrow(() -> new BadRequestException(dto + " not found"));
     }
 
     @Override

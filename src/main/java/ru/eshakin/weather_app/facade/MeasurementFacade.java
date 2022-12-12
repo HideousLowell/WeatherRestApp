@@ -8,24 +8,26 @@ import java.util.List;
 /**
  * Интерфейс, посредством которого контроллер взаимодействовует
  * с сервисом для обращения к БД (таблица Measurement)
- * Преобразует DTO в сущность и обратно
+ * Обрабатывает возникшие ошибки, выбрасывая исключения
+ * Преобразует DTO в сущность, передает ее сервису (и обратно)
  */
 public interface MeasurementFacade {
 
      /**
+      * Получить все измерения
       * @return список всех измерений
       */
      List<MeasurementDto> findAll();
 
      /**
+      * Найти все измерения определенного сенсора
       * @param sensorName - имя сенсора
-      * @throws ru.eshakin.weather_app.exceptions.BadRequestException
-      * в случае отсуствия искомого сенсора в БД
       * @return список всех измерений для конкретного сенсора
       */
      List<MeasurementDto> findBySensor(String sensorName);
 
      /**
+      * Добавить измерение
       * @param measurement - добавляемое измерение
       * @throws ru.eshakin.weather_app.exceptions.BadRequestException
       * * в случае отсуствия сенсора в БД
@@ -34,11 +36,13 @@ public interface MeasurementFacade {
      MeasurementDto create(MeasurementDto measurement);
 
      /**
-      * @return количество дождливых дней
+      * Получить количество дождливых дней
+      * @return количество дней
       */
      int getRainyDaysCount();
 
      /**
+      * Удалить измерение
       * @param id id удаляемого измерения
       * @throws ru.eshakin.weather_app.exceptions.BadRequestException
       * в случае отсутствия измерения с указанным id в БД
@@ -47,10 +51,11 @@ public interface MeasurementFacade {
      int delete(int id);
 
      /**
+      * Добавить список измерений
       * @param listOfDto список измерений, которые нужно добавить в БД
       * @throws ru.eshakin.weather_app.exceptions.BadRequestException
       * в случае отсутствия какого-либо сенсора в БД, добавление не осуществляется
       * @return список в случае успеха
       */
-     MeasurementList addAll(MeasurementList listOfDto);
+     MeasurementList batchCreate(MeasurementList listOfDto);
 }
