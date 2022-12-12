@@ -30,6 +30,8 @@ public class MeasurementFacadeImpl implements MeasurementFacade {
     }
 
     public List<MeasurementDto> findBySensor(String sensorName) {
+        if (sensorService.find(sensorName).isEmpty())
+            throw new BadRequestException("Sensor with this name not found");
         return measurementService
                 .findBySensorName(sensorName)
                 .stream()
@@ -43,15 +45,15 @@ public class MeasurementFacadeImpl implements MeasurementFacade {
     }
 
     @Override
-    public void create(MeasurementDto dto) {
+    public MeasurementDto create(MeasurementDto dto) {
         if (sensorService.find(dto.getSensor().getName()).isEmpty())
             throw new BadRequestException("Sensor with this name not found");
         measurementService.create(convertToEntity(dto));
+        return dto;
     }
 
     @Override
-    public void batchCreate(MeasurementList listOfDto) {
-
+    public MeasurementList addAll(MeasurementList listOfDto) {
         List<Measurement> resultList = listOfDto
                 .getMeasurements()
                 .stream()
@@ -65,11 +67,14 @@ public class MeasurementFacadeImpl implements MeasurementFacade {
         });
 
         measurementService.batchCreate(resultList);
+        return listOfDto;
     }
 
     @Override
-    public void delete(int id) {
-        measurementService.delete(id);
+    public int delete(int id) {
+        if (measurementService.delete(id))
+            return id;
+        throw new BadRequestException("Measurement with this id not found");
     }
 
     private MeasurementDto convertToDto(Measurement measurement) {

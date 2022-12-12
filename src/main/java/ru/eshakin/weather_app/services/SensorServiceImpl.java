@@ -35,7 +35,10 @@ public class SensorServiceImpl implements SensorService{
     @Override
     public boolean delete(String name) {
         Optional<Sensor> sensor = sensorRepo.findByName(name);
-        sensor.ifPresent(sensorRepo::delete);
-        return sensor.isPresent();
+        if (sensor.isPresent()) {
+            sensorRepo.deleteByName(name);
+            return true;
+        }
+        return false;
     }
 }

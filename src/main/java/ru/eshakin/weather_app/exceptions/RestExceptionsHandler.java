@@ -16,10 +16,14 @@ import ru.eshakin.weather_app.errors.ApiValidationError;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+/**
+ * Класс, который ловит BadRequestException, MethodArgumentNotValidException
+ * для контроллеров и возвращает клиенту ошибку
+ */
 @Component
 @ControllerAdvice
 public class RestExceptionsHandler extends ResponseEntityExceptionHandler {
-
 
     @Override
     @NonNull
@@ -48,12 +52,11 @@ public class RestExceptionsHandler extends ResponseEntityExceptionHandler {
             return new ResponseEntity<>(apiError, status);
         }
 
-        return new ResponseEntity<>(new ApiError("Error"), status);
+        return new ResponseEntity<>(new ApiError("Unknown error"), status);
     }
 
     @ExceptionHandler
     private ResponseEntity<ApiError> handleException(BadRequestException exception) {
-        ApiError response = new ApiError(exception.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exception.getApiError(), HttpStatus.BAD_REQUEST);
     }
 }

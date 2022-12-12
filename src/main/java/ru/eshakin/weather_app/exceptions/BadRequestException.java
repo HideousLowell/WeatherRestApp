@@ -3,6 +3,11 @@ package ru.eshakin.weather_app.exceptions;
 import lombok.Getter;
 import ru.eshakin.weather_app.errors.ApiError;
 
+/**
+ * Содержит ApiError
+ * Ошибка при обращении к БД
+ * @see ApiError
+ */
 @Getter
 public class BadRequestException extends RuntimeException {
 
@@ -12,5 +17,4 @@ public class BadRequestException extends RuntimeException {
         super(message);
         this.apiError = new ApiError(message);
     }
-
 }

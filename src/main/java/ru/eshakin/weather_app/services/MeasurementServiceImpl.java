@@ -45,6 +45,7 @@ public class MeasurementServiceImpl implements MeasurementService {
         measurementRepo.saveAll(measurements);
     }
 
+    @Override
     public List<Measurement> findBySensorName(String sensorName) {
         Optional<Sensor> sensor = sensorService.find(sensorName);
 
