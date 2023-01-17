@@ -9,9 +9,9 @@
         <relativePath/>
     </parent>
     <groupId>ru.eshakin</groupId>
-    <artifactId>WeatherRestApp</artifactId>
+    <artifactId>WeatherRestServer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>WeatherRestApp</name>
+    <name>WeatherRestServer</name>
     <description>Weather REST Application</description>
     <properties>
         <java.version>11</java.version>
@@ -49,6 +49,12 @@
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>3.1.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.14</version>
         </dependency>
     </dependencies>
 
