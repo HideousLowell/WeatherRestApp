@@ -64,7 +64,7 @@ public class MeasurementController {
      * @return HttpStatus.CREATED в случае успеха
      */
     @PostMapping("/add")
-    public ResponseEntity<HttpStatus> batchCreate(@RequestBody @Validated MeasurementDto measurement) {
+    public ResponseEntity<HttpStatus> create(@RequestBody @Validated MeasurementDto measurement) {
         mFacade.create(measurement);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
